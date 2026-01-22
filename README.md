@@ -105,10 +105,6 @@ error[invalid-return-type]: Return type does not match returned value
 2. Check hooks are registered: `/hooks`
 3. Verify plugin is enabled in settings
 
-#### UV_ENV_FILE error
-
-If you see `error: No environment file found at: .env`, the script handles this by unsetting `UV_ENV_FILE`. If issues persist, check your shell profile for this variable.
-
 #### Tools not found
 
 Ensure `uvx` is in your PATH:

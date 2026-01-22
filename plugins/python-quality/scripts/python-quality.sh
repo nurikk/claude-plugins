@@ -3,9 +3,6 @@
 
 set -euo pipefail
 
-# Unset UV_ENV_FILE to prevent uvx from requiring a .env file
-unset UV_ENV_FILE
-
 # Read hook input from stdin
 input_data=$(cat)
 
