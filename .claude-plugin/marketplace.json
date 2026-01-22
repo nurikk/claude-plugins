@@ -1,5 +1,5 @@
 {
-  "name": "claude-plugins",
+  "name": "nurikk-plugins",
   "owner": {
     "name": "nur"
   },
@@ -10,7 +10,7 @@
   "plugins": [
     {
       "name": "python-quality",
-      "source": "python-quality",
+      "source": "./python-quality",
       "description": "Automatic Python formatting, linting, and type checking with ruff and ty",
       "version": "1.0.0",
       "author": {

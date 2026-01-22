@@ -12,7 +12,7 @@ A collection of Claude Code plugins.
 
 | Plugin | Description | Install |
 |--------|-------------|---------|
-| [python-quality](#python-quality) | Python formatting, linting & type checking with ruff and ty | `/plugin install python-quality@nurikk/claude-plugins` |
+| [python-quality](#python-quality) | Python formatting, linting & type checking with ruff and ty | `/plugin install python-quality@nurikk-plugins` |
 
 ---
 
@@ -51,7 +51,7 @@ powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | ie
 
 ```
 /plugin marketplace add nurikk/claude-plugins
-/plugin install python-quality@nurikk/claude-plugins
+/plugin install python-quality@nurikk-plugins
 ```
 
 Or add directly to your `~/.claude/settings.json`:
@@ -59,7 +59,7 @@ Or add directly to your `~/.claude/settings.json`:
 ```json
 {
   "enabledPlugins": {
-    "python-quality@nurikk/claude-plugins": true
+    "python-quality@nurikk-plugins": true
   }
 }
 ```
