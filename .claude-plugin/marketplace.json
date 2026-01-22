@@ -4,13 +4,12 @@
     "name": "nur"
   },
   "metadata": {
-    "description": "Collection of Claude Code plugins",
-    "pluginRoot": "./plugins"
+    "description": "Collection of Claude Code plugins"
   },
   "plugins": [
     {
       "name": "python-quality",
-      "source": "./python-quality",
+      "source": "./plugins/python-quality",
       "description": "Automatic Python formatting, linting, and type checking with ruff and ty",
       "version": "1.0.0",
       "author": {
