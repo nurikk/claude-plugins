@@ -8,6 +8,8 @@ A collection of Claude Code plugins.
 /plugin marketplace add nurikk/claude-plugins
 ```
 
+> **Note:** The GitHub repo is `nurikk/claude-plugins`, but the marketplace identifier is `nurikk-plugins` (used when installing plugins).
+
 ## Available Plugins
 
 | Plugin | Description | Install |
