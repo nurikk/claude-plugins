@@ -1,0 +1,13 @@
+{
+  "name": "python-quality",
+  "version": "1.0.0",
+  "description": "Runs Python type checking (ty) and formatting/linting (ruff) after file changes",
+  "author": {
+    "name": "nur"
+  },
+  "repository": "https://github.com/nurikk/claude-python-quality",
+  "homepage": "https://github.com/nurikk/claude-python-quality#readme",
+  "license": "MIT",
+  "keywords": ["python", "typecheck", "formatter", "linter", "ruff", "ty", "astral"],
+  "hooks": "./hooks/hooks.json"
+}
