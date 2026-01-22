@@ -1,0 +1,23 @@
+{
+  "name": "claude-plugins",
+  "owner": {
+    "name": "nur"
+  },
+  "metadata": {
+    "description": "Collection of Claude Code plugins",
+    "pluginRoot": "./plugins"
+  },
+  "plugins": [
+    {
+      "name": "python-quality",
+      "source": "python-quality",
+      "description": "Automatic Python formatting, linting, and type checking with ruff and ty",
+      "version": "1.0.0",
+      "author": {
+        "name": "nur"
+      },
+      "license": "MIT",
+      "keywords": ["python", "ruff", "ty", "formatter", "linter", "typecheck"]
+    }
+  ]
+}

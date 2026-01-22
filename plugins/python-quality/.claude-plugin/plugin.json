@@ -5,8 +5,8 @@
   "author": {
     "name": "nur"
   },
-  "repository": "https://github.com/nurikk/claude-python-quality",
-  "homepage": "https://github.com/nurikk/claude-python-quality#readme",
+  "repository": "https://github.com/nurikk/claude-plugins",
+  "homepage": "https://github.com/nurikk/claude-plugins#python-quality",
   "license": "MIT",
   "keywords": ["python", "typecheck", "formatter", "linter", "ruff", "ty", "astral"],
   "hooks": "./hooks/hooks.json"

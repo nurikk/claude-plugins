@@ -1,8 +1,26 @@
-# python-quality
+# Claude Plugins
 
-A Claude Code plugin that automatically runs Python quality checks after file changes.
+A collection of Claude Code plugins.
 
-## What It Does
+## Quick Start
+
+```
+/plugin marketplace add nurikk/claude-plugins
+```
+
+## Available Plugins
+
+| Plugin | Description | Install |
+|--------|-------------|---------|
+| [python-quality](#python-quality) | Python formatting, linting & type checking with ruff and ty | `/plugin install python-quality@nurikk/claude-plugins` |
+
+---
+
+## python-quality
+
+Automatically runs Python quality checks after file changes.
+
+### What It Does
 
 When Claude writes or edits a `.py` file, this plugin automatically runs:
 
@@ -12,7 +30,7 @@ When Claude writes or edits a `.py` file, this plugin automatically runs:
 | **ruff check** | `uvx ruff check --fix` | Lints and auto-fixes safe issues |
 | **ty** | `uvx ty check` | Type checks using Astral's fast type checker |
 
-## Requirements
+### Requirements
 
 - [uv](https://github.com/astral-sh/uv) - Fast Python package installer
 - `jq` - JSON processor (pre-installed on most systems)
@@ -29,15 +47,11 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
 
-## Installation
-
-### Option 1: From GitHub (Recommended)
-
-Add this plugin as a marketplace in Claude Code:
+### Installation
 
 ```
-/plugin marketplace add nurikk/claude-python-quality
-/plugin install python-quality@nurikk/claude-python-quality
+/plugin marketplace add nurikk/claude-plugins
+/plugin install python-quality@nurikk/claude-plugins
 ```
 
 Or add directly to your `~/.claude/settings.json`:
@@ -45,65 +59,14 @@ Or add directly to your `~/.claude/settings.json`:
 ```json
 {
   "enabledPlugins": {
-    "python-quality@nurikk/claude-python-quality": true
+    "python-quality@nurikk/claude-plugins": true
   }
 }
 ```
 
-### Option 2: Clone Locally
+### Behavior
 
-```bash
-# Create plugins directory
-mkdir -p ~/.claude/plugins
-
-# Clone the plugin
-git clone https://github.com/nurikk/claude-python-quality.git ~/.claude/plugins/python-quality
-```
-
-Then add to `~/.claude/settings.json`:
-
-```json
-{
-  "enabledPlugins": {
-    "~/.claude/plugins/python-quality": true
-  }
-}
-```
-
-### Option 3: Test During Development
-
-```bash
-claude --plugin-dir ./python-quality
-```
-
-## Configuration
-
-The plugin uses `PostToolUse` hooks to run after `Write` or `Edit` operations on Python files.
-
-### hooks/hooks.json
-
-```json
-{
-  "hooks": {
-    "PostToolUse": [
-      {
-        "matcher": "Write|Edit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/scripts/python-quality.sh",
-            "timeout": 120
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
-## Behavior
-
-### Auto-formatting
+#### Auto-formatting
 
 The plugin auto-formats Python files using ruff, which handles:
 - Import sorting
@@ -111,14 +74,14 @@ The plugin auto-formats Python files using ruff, which handles:
 - Consistent spacing
 - Quote style normalization
 
-### Auto-fixing
+#### Auto-fixing
 
 Safe lint fixes are applied automatically:
 - Removing unused imports
 - Fixing simple style issues
 - Correcting obvious errors
 
-### Type Checking
+#### Type Checking
 
 Type errors are reported but don't block the operation. You'll see output like:
 
@@ -132,45 +95,51 @@ error[invalid-return-type]: Return type does not match returned value
   |            ^^^^^^^ expected `int`, found `str`
 ```
 
-## Troubleshooting
+### Troubleshooting
 
-### Hook not running
+#### Hook not running
 
 1. Restart Claude Code after installing the plugin
 2. Check hooks are registered: `/hooks`
 3. Verify plugin is enabled in settings
 
-### UV_ENV_FILE error
+#### UV_ENV_FILE error
 
 If you see `error: No environment file found at: .env`, the script handles this by unsetting `UV_ENV_FILE`. If issues persist, check your shell profile for this variable.
 
-### Tools not found
+#### Tools not found
 
 Ensure `uvx` is in your PATH:
 ```bash
 which uvx
 ```
 
-## Plugin Structure
-
-```
-python-quality/
-├── .claude-plugin/
-│   └── plugin.json          # Plugin manifest
-├── hooks/
-│   └── hooks.json           # Hook configuration
-├── scripts/
-│   └── python-quality.sh    # Quality check script
-├── README.md                # This file
-└── LICENSE                  # MIT License
-```
-
-## Tools Used
+### Tools Used
 
 - **[ruff](https://github.com/astral-sh/ruff)** - Extremely fast Python linter and formatter
 - **[ty](https://github.com/astral-sh/ty)** - Fast Python type checker from Astral
 
 Both tools are run via `uvx` (uv's tool runner), so they don't need to be pre-installed.
+
+---
+
+## Repository Structure
+
+```
+claude-plugins/
+├── .claude-plugin/
+│   └── marketplace.json      # Marketplace catalog
+├── plugins/
+│   └── python-quality/       # Python quality plugin
+│       ├── .claude-plugin/
+│       │   └── plugin.json
+│       ├── hooks/
+│       │   └── hooks.json
+│       └── scripts/
+│           └── python-quality.sh
+├── README.md
+└── LICENSE
+```
 
 ## License
 
