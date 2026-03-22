@@ -1,0 +1,71 @@
+name: Telegram Plugin CI
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'plugins/telegram/**'
+      - '.github/workflows/telegram-ci.yml'
+  pull_request:
+    branches: [main, master]
+    paths:
+      - 'plugins/telegram/**'
+      - '.github/workflows/telegram-ci.yml'
+
+jobs:
+  lint-and-typecheck:
+    name: Lint & Type Check
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: plugins/telegram
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --no-summary
+
+      - name: Type check
+        run: bun x tsc --noEmit --strict --moduleResolution bundler --module esnext --target esnext --skipLibCheck server.ts src/utils.ts
+
+  test:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: plugins/telegram
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --no-summary
+
+      - name: Run tests
+        run: bun test
+
+  build:
+    name: Build Check
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: plugins/telegram
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --no-summary
+
+      - name: Verify server can be parsed
+        run: bun build --target=bun --outdir=/tmp/build-check server.ts
