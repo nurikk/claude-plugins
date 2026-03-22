@@ -366,7 +366,7 @@ const mcp = new Server(
       '',
       'Messages from Telegram arrive as <channel source="telegram" chat_id="..." message_id="..." user="..." ts="...">. If the tag has message_thread_id, the message is from a forum topic — pass message_thread_id back in the reply tool so the response lands in the correct topic. If the tag has an image_path attribute, Read that file — it is a photo the sender attached. If the tag has attachment_file_id, call download_attachment with that file_id to fetch the file, then Read the returned path. Reply with the reply tool — pass chat_id back (and message_thread_id if present). Use reply_to (set to a message_id) only when replying to an earlier message; the latest message doesn\'t need a quote-reply, omit reply_to for normal responses.',
       '',
-      'reply accepts file paths (files: ["/abs/path.png"]) for attachments. Use react to add emoji reactions, and edit_message for interim progress updates. Edits don\'t trigger push notifications — when a long task completes, send a new reply so the user\'s device pings.',
+      'reply accepts file paths (files: ["/abs/path.png"]) for attachments. Use react to add emoji reactions. For long-running tasks, use send_draft to stream progress updates — the draft appears as a live typing preview and is automatically replaced when you send the final reply. Use edit_message for persistent interim updates. Edits don\'t trigger push notifications — when a long task completes, send a new reply so the user\'s device pings.',
       '',
       "Telegram's Bot API exposes no history or search — you only see messages as they arrive. If you need earlier context, ask the user to paste it or summarize.",
       '',
@@ -430,6 +430,28 @@ mcp.setRequestHandler(ListToolsRequestSchema, async () => ({
           file_id: { type: 'string', description: 'The attachment_file_id from inbound meta' },
         },
         required: ['file_id'],
+      },
+    },
+    {
+      name: 'send_draft',
+      description:
+        'Stream a partial/progress message to the user while working. The draft appears as a typing preview in the chat and is replaced when you send a real reply. Use this during long tasks to show what you\'re doing (e.g. "Reading files...", "Running tests..."). Private chats only. Same draft_id animates smoothly between updates.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          chat_id: { type: 'string' },
+          text: { type: 'string', description: 'The draft/progress text to show. 1-4096 characters.' },
+          draft_id: {
+            type: 'number',
+            description: 'Unique draft identifier. Defaults to 1. Updates with the same draft_id animate smoothly.',
+          },
+          format: {
+            type: 'string',
+            enum: ['text', 'markdownv2'],
+            description: "Rendering mode. Default: 'text'.",
+          },
+        },
+        required: ['chat_id', 'text'],
       },
     },
     {
@@ -552,6 +574,18 @@ mcp.setRequestHandler(CallToolRequestSchema, async req => {
         mkdirSync(INBOX_DIR, { recursive: true })
         writeFileSync(path, buf)
         return { content: [{ type: 'text', text: path }] }
+      }
+      case 'send_draft': {
+        const chat_id = args.chat_id as string
+        assertAllowedChat(chat_id)
+        clearTyping(chat_id)
+        const draftId = args.draft_id != null ? Number(args.draft_id) : 1
+        const draftFormat = (args.format as string | undefined) ?? 'text'
+        const draftParseMode = draftFormat === 'markdownv2' ? 'MarkdownV2' as const : undefined
+        await bot.api.sendMessageDraft(Number(chat_id), draftId, args.text as string, {
+          ...(draftParseMode ? { parse_mode: draftParseMode } : {}),
+        })
+        return { content: [{ type: 'text', text: 'draft sent' }] }
       }
       case 'edit_message': {
         assertAllowedChat(args.chat_id as string)
