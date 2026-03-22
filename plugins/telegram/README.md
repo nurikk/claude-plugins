@@ -47,6 +47,12 @@ The server won't connect without this — exit your session and start a new one:
 claude --channels plugin:telegram@claude-plugins-official
 ```
 
+Or to run from a development fork:
+
+```sh
+claude --dangerously-skip-permissions --dangerously-load-development-channels plugin:telegram@nurikk-plugins
+```
+
 **5. Pair.**
 
 With Claude Code running from the previous step, DM your bot on Telegram — it replies with a 6-character pairing code. If the bot doesn't respond, make sure your session is running with `--channels`. In your Claude Code session:
@@ -86,6 +92,21 @@ Inbound photos are downloaded to `~/.claude/channels/telegram/inbox/` and the
 local path is included in the `<channel>` notification so the assistant can
 `Read` it. Telegram compresses photos — if you need the original file, send it
 as a document instead (long-press → Send as File).
+
+## Voice messages
+
+Voice messages are automatically transcribed using OpenAI's Whisper API when
+`OPENAI_API_KEY` is configured. Add it alongside the bot token:
+
+```
+OPENAI_API_KEY=sk-proj-...
+```
+
+in `~/.claude/channels/telegram/.env`, or set it in your shell environment.
+
+When transcription succeeds, Claude receives the spoken text directly. If it
+fails (missing key, network error, API issue), Claude sees the error inline and
+the original audio remains downloadable via `attachment_file_id`.
 
 ## No history or search
 
