@@ -17,6 +17,17 @@
       },
       "license": "MIT",
       "keywords": ["python", "ruff", "ty", "formatter", "linter", "typecheck"]
+    },
+    {
+      "name": "telegram",
+      "source": "./plugins/telegram",
+      "description": "Telegram channel for Claude Code — messaging bridge with built-in access control",
+      "version": "0.0.1",
+      "author": {
+        "name": "nur"
+      },
+      "license": "MIT",
+      "keywords": ["telegram", "messaging", "channel", "mcp"]
     }
   ]
 }
